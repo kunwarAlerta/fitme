@@ -657,7 +657,8 @@ iframe {
 }
 
 .pic-btn {
-  margin: 50px auto 20px;
+  margin: 63px auto 20px;
+  clear: both;
 }
 
 .select-store h2 {
@@ -679,6 +680,7 @@ iframe {
 
 .select-store .thumbnails {
   margin-bottom: 30px;
+  clear: both;
 }
 
 .filter {

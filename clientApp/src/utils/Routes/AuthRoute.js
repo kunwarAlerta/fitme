@@ -7,5 +7,5 @@ export default function AuthRoute({ children, ...rest }) {
   const { token } = useContext(UserContext);
   if (token) return <MainRoute {...rest}>{children}</MainRoute>;
 
-  return <Redirect to="/store" />;
+  return <Redirect to="/size" />;
 }

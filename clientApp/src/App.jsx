@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Routes, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import AppContext from "./context/AppContext";
-import Loading from "./components/Loading";
+import Loader from "./components/Loader";
 import AuthRoute from "./utils/Routes/AuthRoute";
 import GuestRoute from "./utils/Routes/GuestRoute";
 import MainRoute from "./utils/Routes/MainRoute";
@@ -16,12 +16,12 @@ function App() {
     setIsLoading(true);
     const checkLoggedIn = async () => {
       let token = localStorage.getItem("auth-token");
-      console.log(token);
       if (token === "") {
         setToken("");
         setUser({});
         token = "";
       }
+      console.log(token);
       setUser(token ? jwt_decode(token) : null);
       setToken(token);
       setIsLoading(false);
@@ -29,7 +29,7 @@ function App() {
     checkLoggedIn();
   }, [isLoading, setToken]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <Loader />;
   return (
     <Routes>
       <AppContext.Provider value={{ user, setUser, token, setToken }}>

@@ -5,6 +5,8 @@ import logger from "morgan";
 import path from "path";
 import user from "./routes/user.route";
 import category from "./routes/category.route";
+import store from "./routes/store.route";
+import size from "./routes/size.route";
 import passport from "passport";
 import { PassportLocal } from "./middleware/passport";
 import { errorHandler } from "./middleware/errorHandler";
@@ -47,6 +49,8 @@ class App {
   private initRoutes(): void {
     this.app.use("/api/user", user);
     this.app.use("/api/category", category);
+    this.app.use("/api/store", store);
+    this.app.use("/api/size", size);
     this.app.use(errorHandler);
   }
 

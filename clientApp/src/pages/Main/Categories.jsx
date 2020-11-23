@@ -1,5 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import Loader from "../../components/Loader";
+import { Header } from "../Shared/Header";
+
 export const Categories = () => {
+  const [loading, setLoading] = React.useState(true);
+  const [categories, setCategories] = React.useState({});
+  const [currentcategory, setCurentCategory] = React.useState();
+  const history = useHistory();
+  useEffect(() => {
+    axios
+      .get(`/api/category/get`)
+      .then((res) => {
+        setCategories(res.data.categories);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  }, []);
   return (
     <div>
       <div className="limiter">
@@ -7,69 +28,39 @@ export const Categories = () => {
           className="container-login100"
           style={{ backgroundImage: 'url("images/001.png")' }}
         >
-          <span className="logo text-center">
-            <h3>FitMe</h3>
-          </span>
+          <Header />
           <div className="wrapper">
             <div className="row">
               <div className="filter">
-                <ul className="category">
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>Mens</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>Womens</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>kids</h4>
-                    </div>
-                  </li>
-                </ul>
-                <ul className="category">
-                  <li className="col-md-3 pull-left">
-                    <div className="caption">
-                      <h4>T-Shirt</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-3 pull-left">
-                    <div className="caption">
-                      <h4>Shirts</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-3 pull-left">
-                    <div className="caption">
-                      <h4>Pants</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-3 pull-left">
-                    <div className="caption">
-                      <h4>Shorts</h4>
-                    </div>
-                  </li>
-                </ul>
-                <ul className="category">
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>Loose</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>Tight</h4>
-                    </div>
-                  </li>
-                  <li className="col-md-4 pull-left">
-                    <div className="caption">
-                      <h4>Perfect</h4>
-                    </div>
-                  </li>
-                </ul>
-                <button className="login100-form-btn pic-btn ">Submit</button>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <ul className="category">
+                    {categories.map((category) => (
+                      <li className="col-md-4 pull-left">
+                        <div
+                          className="caption"
+                          onClick={() => setCurentCategory(category._id)}
+                          style={{
+                            border:
+                              currentcategory === category._id
+                                ? "1px solid #000"
+                                : "1px solid #DEE",
+                          }}
+                        >
+                          <h4>{category.name}</h4>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <button
+                  disabled={currentcategory ? false : true}
+                  className="login100-form-btn pic-btn"
+                  onClick={() => history.push("/select-size")}
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </div>

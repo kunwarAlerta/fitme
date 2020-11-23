@@ -22,7 +22,10 @@ export class UserController {
     if (!user) {
       throw "Incorrect password";
     }
-    const token = await jwt.sign(user, process.env.ACTIVATIONKEY || "");
+    const token = await jwt.sign(
+      data.toJSON(),
+      process.env.ACTIVATIONKEY || ""
+    );
     return token;
   }
 
@@ -35,5 +38,18 @@ export class UserController {
   }
   public async sendVerificationEmail(params: any, token: any) {
     await Helper.sendEmail(params, token);
+  }
+  public async updateSize(params: any) {
+    await UserModel.findOneAndUpdate(
+      { _id: params._id },
+      { size: params.size },
+      {
+        new: true,
+      }
+    );
+  }
+  public async getSize(_id: string) {
+    var user = await UserModel.findById(_id).populate("size").exec();
+    if (user) return user;
   }
 }

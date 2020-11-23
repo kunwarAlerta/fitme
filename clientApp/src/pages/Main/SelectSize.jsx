@@ -1,26 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Loader from "../../components/Loader";
+import AppContext from "../../context/AppContext";
 import { Header } from "../Shared/Header";
 
-export const Store = () => {
+export const SelectSize = () => {
   const [loading, setLoading] = React.useState(true);
-  const [stores, setStores] = React.useState({});
-  const [currentstore, setCurentStore] = React.useState();
+  const [sizes, setSizes] = React.useState({});
+  const [currentsize, setCurentSize] = React.useState();
+  const { user } = useContext(AppContext);
   const history = useHistory();
   useEffect(() => {
     axios
-      .get(`/api/store/get`)
+      .get(`/api/size/get`)
       .then((res) => {
-        setStores(res.data.stores);
+        setSizes(res.data.sizes);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setLoading(false);
       });
   }, []);
+  const setMySize = (currentsize) => {
+    axios
+      .post(`/api/user/size`, { _id: user._id, size: currentsize })
+      .then((res) => {
+        history.push("/my-size");
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
   return (
     <div>
       <div className="limiter">
@@ -31,35 +42,33 @@ export const Store = () => {
           <Header />
           <div className="wrapper">
             <div className="row">
-              <div className="select-store">
-                <h2>Select your Store</h2>
+              <div className="filter">
                 {loading ? (
                   <Loader />
                 ) : (
-                  <ul className="thumbnails">
-                    {stores.map((store) => (
-                      <li className="col-md-3 pull-left">
+                  <ul className="category">
+                    {sizes.map((size) => (
+                      <li className="col-md-4 pull-left">
                         <div
                           className="caption"
-                          onClick={() => setCurentStore(store._id)}
+                          onClick={() => setCurentSize(size._id)}
                           style={{
                             border:
-                              currentstore === store._id
+                              currentsize === size._id
                                 ? "1px solid #000"
                                 : "1px solid #DEE",
                           }}
                         >
-                          <h4>{store.name}</h4>
+                          <h4>{size.name}</h4>
                         </div>
                       </li>
                     ))}
                   </ul>
                 )}
-
                 <button
-                  disabled={currentstore ? false : true}
+                  disabled={currentsize ? false : true}
                   className="login100-form-btn pic-btn"
-                  onClick={() => history.push("/categories")}
+                  onClick={() => setMySize(currentsize)}
                 >
                   Submit
                 </button>

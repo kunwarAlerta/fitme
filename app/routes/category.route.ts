@@ -4,7 +4,7 @@ import CategoryModel from "../models/category.model";
 const route: express.Router = express.Router();
 
 route.get("/get", getCategories);
-route.get("/add", addCategory);
+route.post("/add", addCategory);
 
 function getCategories(req: Request, res: Response, next: NextFunction) {
   CategoryModel.find({})
@@ -16,10 +16,12 @@ function getCategories(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 function addCategory(req: Request, res: Response, next: NextFunction) {
-  CategoryModel.find({ name })
-    .then((categories) => {
+  const categoryModel = new CategoryModel(req.body);
+  categoryModel
+    .save()
+    .then(() => {
       res.send({
-        categories,
+        message: "Categories created successfully",
       });
     })
     .catch(next);

@@ -17,8 +17,8 @@ const userSchema = new mongoose.Schema({
     default: true,
   },
   size: {
-    type: String,
-    default: "",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "size",
   },
   password: {
     type: String,

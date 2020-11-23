@@ -5,7 +5,11 @@ import { Categories } from "../../pages/Main/Categories";
 import { Verification } from "../../pages/Auth/Verification";
 import { Welcome } from "../../pages/Auth/Welcome";
 import { Store } from "../../pages/Main/Store";
-
+import { Size } from "../../pages/Main/Size";
+import { HowToUpload } from "../../pages/Main/HowToUpload";
+import { FindSize } from "../../pages/Main/UploadPicture";
+import { SelectSize } from "../../pages/Main/SelectSize";
+import { MySize } from "../../pages/Main/MySize";
 export default [
   {
     path: "/",
@@ -36,6 +40,31 @@ export default [
   {
     path: "/store",
     component: () => <Store />,
+    protected: "auth",
+  },
+  {
+    path: "/size",
+    component: () => <Size />,
+    protected: "auth",
+  },
+  {
+    path: "/how-to-upload",
+    component: () => <HowToUpload />,
+    protected: "auth",
+  },
+  {
+    path: "/find-size",
+    component: () => <FindSize />,
+    protected: "auth",
+  },
+  {
+    path: "/select-size",
+    component: () => <SelectSize />,
+    protected: "auth",
+  },
+  {
+    path: "/my-size",
+    component: () => <MySize />,
     protected: "auth",
   },
 ];
