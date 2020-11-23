@@ -18,13 +18,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = __importStar(require("mongoose"));
-const Schema = mongoose.Schema;
-const userSchema = new Schema({
-    firstname: { type: String, required: "Enter you first name" },
-    lastname: { type: String, required: "Enter you last name" },
-    email: { type: String, required: "Enter you email" },
-    password: { type: String, required: "Enter you password" },
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
+const app_1 = __importDefault(require("./app"));
+const server = app_1.default.listen(app_1.default.get("port"), () => {
+    console.log("  App is running at http://localhost:%d in %s mode", app_1.default.get("port"), app_1.default.get("env"));
+    console.log("  Press CTRL-C to stop\n");
 });
-mongoose.model("user", userSchema);
+exports.default = server;
